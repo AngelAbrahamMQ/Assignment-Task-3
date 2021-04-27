@@ -1,0 +1,16 @@
+SELECT LastName,FirstName,MemberID 
+from Member 
+where  Coach IS NULL ;
+
+
+SELECT LastName,FirstName,MemberID, JoinDate 
+from Member 
+where  year (JoinDate) = '2013' ;
+
+
+SELECT Entry.Year , Member.LastName FROM Entry  
+JOIN  Member  ON Member.MemberID=Entry.MemberID 
+where Entry.year <> 2013 AND  Entry.MemberID  
+NOT IN  (SELECT Entry.MemberID FROM Entry where Entry.year = 2013) ;
+
+

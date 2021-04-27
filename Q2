@@ -1,16 +1,39 @@
-SELECT LastName,FirstName,MemberID 
-from Member 
-where  Coach IS NULL ;
+SELECT m.LastName,m.FirstName,m.MemberID 
+from Member(m) 
+where  m.Coach IS NULL ;
 
 
-SELECT LastName,FirstName,MemberID, JoinDate 
-from Member 
-where  year (JoinDate) = '2013' ;
+
+SELECT m.LastName,m.FirstName,m.MemberID, JoinDate 
+from Member(m)
+where  year (m.JoinDate) = '2013' ;
 
 
-SELECT Entry.Year , Member.LastName FROM Entry  
-JOIN  Member  ON Member.MemberID=Entry.MemberID 
-where Entry.year <> 2013 AND  Entry.MemberID  
-NOT IN  (SELECT Entry.MemberID FROM Entry where Entry.year = 2013) ;
+
+SELECT distinct m.FirstName, m.LastName, m.MemberID
+from Tournament t
+INNER JOIN Entry e ON t.TourID = e.TourID
+INNER JOIN Member m ON m.MemberID = e.MemberID
+WHERE m.MemberID NOT IN 
+(
+select MemberID
+from Entry
+where Year = 2013
+);
+
+
+SELECT m.FirstName, m.LastName, m.MemberID
+FROM Member(m)
+WHERE NOT EXISTS(
+SELECT *
+from Entry e1
+where NOT exists(
+select * 
+from Entry e2
+Where e1.Year = e2.Year AND e2.MemberID = m.MemberID
+)
+);
+
+
 
 

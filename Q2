@@ -11,10 +11,10 @@ where  year (m.JoinDate) = '2013' ;
 
 
 SELECT distinct m.FirstName, m.LastName, m.MemberID
-from Tournament t
-INNER JOIN Entry e ON t.TourID = e.TourID
-INNER JOIN Member m ON m.MemberID = e.MemberID
-WHERE m.MemberID NOT IN 
+from Tournament (t)
+Inner JOIN Entry e on t.TourID = e.TourID
+Inner JOIN Member m on m.MemberID = e.MemberID
+Where m.MemberID NOT in
 (
 select MemberID
 from Entry
@@ -22,17 +22,22 @@ where Year = 2013
 );
 
 
+
+
 SELECT m.FirstName, m.LastName, m.MemberID
-FROM Member(m)
-WHERE NOT EXISTS(
+From Member(m)
+Where NOT exists
+(
 SELECT *
 from Entry e1
-where NOT exists(
+where NOT exists
+(
 select * 
 from Entry e2
 Where e1.Year = e2.Year AND e2.MemberID = m.MemberID
 )
 );
+
 
 
 
